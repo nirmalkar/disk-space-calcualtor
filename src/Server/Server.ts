@@ -4,7 +4,7 @@ import { CalculateDiskSpace } from "./spaceCalc";
 export class Server {
   public startServer() {
     const hostname = "127.0.0.1";
-    const port = 3000;
+    const port = 3001;
 
     const server = createServer(async (req: any, res: any) => {
       res.statusCode = 200;
@@ -13,9 +13,9 @@ export class Server {
       
     });
      // Create a file of 1 GiB
-     new CreateFile().createEmptyFileOfSize("./1.txt", 1 * 1024 * 1024 * 1024);
-   const diskPercentFilled = new CalculateDiskSpace().readFile()
-   console.log(diskPercentFilled, 'disk filled!')
+     const diskPercentFilled = new CalculateDiskSpace().readFile()
+     console.log(diskPercentFilled.avail, 'disk filled!')
+    //  new CreateFile().createEmptyFileOfSize("./1.txt", diskPercentFilled.avail * 1024 * 1024 * 1024);
     server.listen(port, hostname, () => {
       console.log(
         `El servidor se está ejecutando en http://${hostname}:${port}/`
