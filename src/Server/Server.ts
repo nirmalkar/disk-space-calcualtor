@@ -1,4 +1,5 @@
 import { createServer } from "http";
+import { CreateFile } from "./createFile";
 import { CalculateDiskSpace } from "./spaceCalc";
 export class Server {
   public startServer() {
@@ -11,6 +12,8 @@ export class Server {
       res.end("Hola Mundo");
       
     });
+     // Create a file of 1 GiB
+     new CreateFile().createEmptyFileOfSize("./1.txt", 1 * 1024 * 1024 * 1024);
    const diskPercentFilled = new CalculateDiskSpace().readFile()
    console.log(diskPercentFilled, 'disk filled!')
     server.listen(port, hostname, () => {
