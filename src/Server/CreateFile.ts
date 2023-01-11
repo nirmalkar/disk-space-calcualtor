@@ -1,19 +1,28 @@
 const fs = require("fs");
 const { execSync } = require("child_process");
-//create empty file of certain size to fill up the disk space: slower way
 export class CreateFile {
-  public createEmptyFileOfSize(fileName: string, size: number) {
+ public createEmptyFileOfSize(fileName: string, size: number){
     return new Promise((resolve, reject) => {
-      try {
-        // execSync('fallocate -l 1G file')
-        const fh = fs.openSync(fileName, "w");
-        fs.writeSync(fh, "ok", Math.max(0, size - 2));
-        fs.closeSync(fh);
-        resolve(true);
-      } catch (e) {
-        console.log(e, "Error Occurred writing new empty file");
-        reject(e);
+      // Check size
+      if (size < 0) {
+        reject("Error: a negative size doesn't make any sense");
+        return;
       }
+
+      setTimeout(() => {
+        try {
+         const fd = fs.openSync(fileName, "w");
+          if (size > 0) {
+            fs.writeSync(fd, Buffer.alloc(1), 0, 1, size - 1);
+          }
+          // Close the file to commit the changes to the file system
+          fs.closeSync(fd);
+          resolve(true);
+        } catch (error) {
+          reject(error);
+        }
+        // Create the file after the processing of the current JavaScript event loop
+      }, 0);
     });
-  }
+  };
 }

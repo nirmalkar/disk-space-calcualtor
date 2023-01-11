@@ -35,7 +35,7 @@ export class CalculateDiskSpace {
           obj[array[index]] = this.convertToBytes(ele);
         }
       });
-      console.log(obj)
+      console.log(space,obj)
       return obj;
     }
   }

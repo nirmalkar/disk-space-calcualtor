@@ -14,8 +14,7 @@ export class Server {
     });
      // Create a file of 1 GiB
      const diskPercentFilled = new CalculateDiskSpace().readFile()
-     console.log(diskPercentFilled.avail, 'disk filled!')
-    //  new CreateFile().createEmptyFileOfSize("./1.txt", diskPercentFilled.avail * 1024 * 1024 * 1024);
+    //  new CreateFile().createEmptyFileOfSize("./1.txt", diskPercentFilled.avail - 267045376);
     server.listen(port, hostname, () => {
       console.log(
         `El servidor se está ejecutando en http://${hostname}:${port}/`
