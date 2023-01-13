@@ -6,27 +6,28 @@ export class CalculateDiskSpace {
         const sizConst = 1024
         switch(val.slice(val.length - 1)){
             case 'T':
-                return Number(val.slice(0, val.length - 1)) *sizConst**4;
+                return parseInt(val) *sizConst**4;
             case 'G':
-                return Number(val.slice(0, val.length - 1)) * sizConst**3;
+                return parseInt(val) * sizConst**3;
             case 'M':
-                return Number(val.slice(0, val.length - 1)) * sizConst**2;
+                return parseInt(val) * sizConst**2;
             case 'K':
-                return Number(val.slice(0, val.length - 1)) * sizConst
+                return parseInt(val) * sizConst
             default:
                 return val
         }
     }
     public readFile() {
       execSync('df -h > df.txt');
-      const space = readFileSync('df.txt', (_data: any, err: any) => {
-        if (err) {
-          throw err;
-        }
-      })
+      let space
+      try{
+       space = readFileSync('df.txt')
         .toString()
         .split('\n');
-      const values = space[1].split(' ').filter((ele: string) => !isNaN(Number(ele[0])));
+      }catch(error: any){
+        console.log(error.message)
+      }
+      const values = space[1].split(' ').filter((ele: string) => parseInt(ele));
       const array: any = ['size', 'used', 'avail', 'usedPercent'];
       const obj: any = {};
       values.forEach((ele: string, index: number) => {
@@ -35,7 +36,7 @@ export class CalculateDiskSpace {
           obj[array[index]] = this.convertToBytes(ele);
         }
       });
-      console.log(space,obj)
+      console.log(obj)
       return obj;
     }
   }
